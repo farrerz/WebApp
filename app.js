@@ -12,13 +12,13 @@ router.use(function (req,res,next) {
 });
 
 router.get("/",function(req,res){
-  res.sendFile( "index.html");
+  res.sendFile("index.html", {"root": __dirname});
 });
 
 app.use("/",router);
 
 app.use("*",function(req,res){
-  res.sendFile("404.html");
+  res.sendFile("404.html", {"root": __dirname});
 });
 
 app.listen(port, function () {
