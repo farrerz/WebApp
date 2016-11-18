@@ -18,6 +18,14 @@
     background-color: white;
   }
 
+  .form-control{
+
+  }
+
+  .rw-invalid{
+    border-color: red;
+    outline-color: red;
+  }
     h4 {
       font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 24px;
@@ -62,7 +70,7 @@
                       <div class="inputGroupContainer">
                       <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                      <input type="password" name="pass_word" class="form-control " id="passwordInput" placeholder='Enter password' >
+                      <input type="password" name="pass_word" class="form-control" id="passwordInput" placeholder='Enter password' >
                         </div>
                       </div>
                     </div>
@@ -86,8 +94,21 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $("#login_form").submit(function(){
-        
+    $("#login_form").submit(function(e){
+        var username = $("#usernameInput").val()
+        var password = $("#passwordInput").val()
+        if (username.length < 1){
+          e.preventDefault();
+          $("#usernameInput").addClass("rw-invalid");
+        }else{
+          $("#usernameInput").removeClass("rw-invalid");
+        }
+        if (password.length < 1){
+            e.preventDefault();
+          $("#passwordInput").addClass("rw-invalid");
+        }else{
+          $("#passwordInput").removeClass("rw-invalid");
+        }
     });
   });
 </script>
