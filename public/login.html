@@ -3,38 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Sign in</title>
+    <link rel="stylesheet" href="/css/account.css" media="screen">
+    <script src="/js/toolset.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
-<!-- Inner style sheet -->
-<style media="screen">
 
-  body{
-    background-color: #f5f5f5;
-    padding: 100px;
-  }
-  .well{
-    background-color: white;
-  }
-
-  .form-control{
-
-  }
-
-  .rw-invalid{
-    border-color: red;
-    outline-color: red;
-  }
-    h4 {
-      font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 24px;
-      font-weight: 300;
-      letter-spacing: -0.5px;
-      text-align: center;
-      padding-top: 20px;
-    }
-</style>
 
 <body>
   <div class="container">
@@ -53,10 +28,10 @@
 
       <div class="row">
         <div class="col-md-3 col-md-offset-4">
-                  <form class='well' id="login_form">
+                  <form class='well' id="login_form" action="process?form=login_form" method="POST">
                     <!-- UserName Field -->
                     <div class="form-group">
-                      <label for="passwordInput">Password</label>
+                      <label for="passwordInput">Username</label>
                       <div class="inputGroupContainer">
                       <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -66,7 +41,7 @@
                     </div>
                     <!-- Password Field -->
                     <div class="form-group">
-                      <label for="usernameInput">Username</label>
+                      <label for="usernameInput">Password</label>
                       <div class="inputGroupContainer">
                       <div class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -74,7 +49,6 @@
                         </div>
                       </div>
                     </div>
-
                     <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                   </form>
             </div>
@@ -93,24 +67,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#login_form").submit(function(e){
-        var username = $("#usernameInput").val()
-        var password = $("#passwordInput").val()
-        if (username.length < 1){
-          e.preventDefault();
-          $("#usernameInput").addClass("rw-invalid");
-        }else{
-          $("#usernameInput").removeClass("rw-invalid");
-        }
-        if (password.length < 1){
-            e.preventDefault();
-          $("#passwordInput").addClass("rw-invalid");
-        }else{
-          $("#passwordInput").removeClass("rw-invalid");
-        }
-    });
+$(document).ready(function(){
+  $("#login_form").submit(function(e){
+      verifyInput(e, "#usernameInput");
+      verifyInput(e, "#passwordInput");
   });
+});
+
 </script>
 
 </body>

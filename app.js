@@ -1,26 +1,36 @@
 //  Packages
 var express = require("express");
-var app = express();
-var router = express.Router();
-var port = process.env.PORT || 3000;
+var bodyParser = require('body-parser');
 
-app.use(express.static(__dirname + '/public'));
-// Routing
-router.use(function (req,res,next) {
-  console.log("/" + req.method);
-  next();
+
+// Initiala SetUp
+var app       = express();
+var router    = express.Router();
+var port      = process.env.PORT || 3000;
+var fs        = require('fs');
+var publicdir = __dirname + '/public';
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+/*--------------------------------------------/
+* Routing GET  *.html
+*--------------------------------------------*/
+app.use(function(req, res, next) {
+  if (req.path.indexOf('.') === -1) {
+    var file = publicdir + req.path + '.html';
+    fs.exists(file, function(exists) {
+      if (exists)
+        req.url += '.html';  next();
+    });
+  }else{next();}
 });
+app.use(express.static(publicdir));
 
-router.get("/",function(req,res){
-  res.sendFile("index.html", {"root": __dirname});
-});
-
-app.use("/",router);
-
-app.use("*",function(req,res){
-  res.sendFile("404.html", {"root": __dirname});
-});
+/*--------------------------------------------/
+* Routing POST
+*--------------------------------------------*/
+require('./process_request.js')(app);
 
 app.listen(port, function () {
-   console.log('Server running..');
+   console.log('Server running..http://localhost:3000');
 });

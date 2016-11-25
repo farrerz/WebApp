@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Register for an account</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/account.css" media="screen">
+    <script src="/js/toolset.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+<!-- Body -->
+
+<body>
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-1 col-md-offset-5">
+        <img class="img-responsive" src="images/icon.png" alt="icon" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 col-md-offset-4">
+          <h4>Account Registration</h4>
+      </div>
+    </div>
+
+      <div class="row">
+        <div class="col-md-3 col-md-offset-4">
+                  <form class='well' id='signup_form' action="process?form=signup_form" method="POST">
+
+                    <div class="form-group">
+                      <div class="inputGroupContainer">
+                      <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                      <input type="email" name="email" class="form-control" id="rw_email" placeholder='Email' >
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <!-- UserName Field -->
+                    <div class="form-group">
+                      <div class="inputGroupContainer">
+                      <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                      <input type="text" name="user_name" class="form-control" id="usernameInput" placeholder='Username' >
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="form-group">
+                      <div class="inputGroupContainer">
+                      <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                      <input type="password" name="pass_word" class="form-control" id="pass1" placeholder='Password' >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="inputGroupContainer">
+                      <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                      <input type="password" class="form-control" id="pass2" placeholder='Password' >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="alert alert-danger text-center" id='rw_warning' role="alert" >
+                      <strong>Oh snap!</strong><br> Password mismatch!
+                    </div>
+
+
+                    <p style="text-align:center;">
+                      Already have an account?  <a href="login">login</a>.</p>
+
+                    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+
+                  </form>
+            </div>
+        </div>
+
+</div>
+<!-- Form validation js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+  $(document).ready(function(){
+    $("#rw_warning").hide();
+
+    $("#signup_form").submit(function(e){
+        verifyInput(e, "#rw_email");
+        verifyInput(e, "#usernameInput");
+        verifyInput(e, "#pass1");
+        verifyInput(e, "#pass2");
+        if ( $("#pass1").val() != $("#pass2").val() ){
+            $("#rw_warning").show();
+            e.preventDefault();
+        }else{
+          $("#rw_warning").hide();
+        }
+
+    });
+  });
+</script>
+
+</body>
+</html>
