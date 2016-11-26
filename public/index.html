@@ -7,7 +7,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <link rel="stylesheet" type="text/css" href="css/index.css" />
-
+      <script src='js/main.js'></script>
   </head>
 
 
@@ -57,12 +57,11 @@
           <p class="navbar-text">Action groups</p>
 
         <div class="nav nav-pills navbar-right">
-          <li> <a href="#"><span class="glyphicon glyphicon-refresh"></span></a></li>
-            <li> <a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
-            <li> <a href="#"><span class="glyphicon glyphicon-plus" style="color:#41abf2;"></span></a>
+          <li> <a onclick="pingLocalNetwork()"><span class="glyphicon glyphicon-refresh"></span></a></li>
+            <li> <a onclick="showSetting()"><span class="glyphicon glyphicon-wrench"></span></a></li>
+            <li> <a onclick="addItem()"><span class="glyphicon glyphicon-plus" style="color:#41abf2;"></span></a>
             </li>
         </div>
-
       </nav>
 
         <!-- Main Content -->
