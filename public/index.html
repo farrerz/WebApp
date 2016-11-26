@@ -10,33 +10,73 @@
 
   </head>
 
+
+  <style media="screen">
+      body{
+        margin: 0px;
+        padding: 0px;
+
+      }
+
+      .navbar-fixed-bottom p{
+        width: 100%;
+        text-align: center;
+      }
+
+      .navbar-left{
+        width: 50%;
+      }
+      .glyphicon {
+        font-size: 22px;
+        color: #496972;
+      }
+      .navbar-text{
+                font-size: 18px;
+      }
+      .navbar{
+        padding: 0 10%;
+        padding-top: 20px;
+      }
+
+  </style>
+
   <body>
     <!-- Navigation -->
-    <header>
-      <div class="main_nav">
-        <ul>
-            <li>
-                <a href="#">Search</a>
-            </li>
-            <li>
-              <a href="#" >Sign in</a>
-            </li>
-            <li>
-              <a href="#" >Sign up</a>
-            </li>
-        </ul>
-      </div>
-    </header>
 
-        <hr>
+      <nav class="navbar navbar-default">
+
+          <form class="navbar-form navbar-left" role="search">
+            <a class="navbar-brand" href="#">
+              <img alt="Brand" style="max-width:55px; margin-top: -27px;" src="/images/icon.png">
+            </a>
+              <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search Modules">
+              </div>
+
+          </form>
+          <p class="navbar-text">Action groups</p>
+
+        <div class="nav nav-pills navbar-right">
+          <li> <a href="#"><span class="glyphicon glyphicon-refresh"></span></a></li>
+            <li> <a href="#"><span class="glyphicon glyphicon-wrench"></span></a></li>
+            <li> <a href="#"><span class="glyphicon glyphicon-plus" style="color:#41abf2;"></span></a>
+            </li>
+        </div>
+
+      </nav>
+
         <!-- Main Content -->
     <main>
 
-    </main>
 
+    </main>
       <!-- Footer Content -->
     <footer>
-
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+          <div class="container">
+            <p class="navbar-text">Copyright (c) 2016 Copyright Holder All Rights Reserved.</p>
+          </div>
+      </nav>
     </footer>
 
   </body>
