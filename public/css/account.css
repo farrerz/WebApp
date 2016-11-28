@@ -10,12 +10,11 @@ body{
   border-color: red;
   outline-color: red;
 }
-  h4 {
+h4 {
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 24px;
     font-weight: 300;
     letter-spacing: -0.5px;
     text-align: center;
     padding-top: 20px;
-  }
-  
+}

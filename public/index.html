@@ -9,8 +9,6 @@
       <link rel="stylesheet" type="text/css" href="css/index.css" />
       <script src='js/main.js'></script>
   </head>
-
-
   <style media="screen">
       body{
         margin: 0px;
@@ -24,14 +22,21 @@
       }
 
       .navbar-left{
-        width: 50%;
+
       }
-      .glyphicon {
+
+      .navbar-right {
+        float: right;
+      }
+
+      .nav-pills .glyphicon {
         font-size: 22px;
         color: #496972;
       }
       .navbar-text{
-                font-size: 18px;
+          margin: 0 auto; width: 50%;
+          margin-top: 13px;
+          font-size: 18px;
       }
       .navbar{
         padding: 0 10%;
@@ -46,20 +51,25 @@
       <nav class="navbar navbar-default">
 
           <form class="navbar-form navbar-left" role="search">
-            <a class="navbar-brand" href="#">
-              <img alt="Brand" style="max-width:55px; margin-top: -27px;" src="/images/icon.png">
-            </a>
-              <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search Modules">
-              </div>
-
+                <a class="navbar-brand" href="#">
+                      <img alt="Brand" class="img-responsive" style="max-width:55px; margin-top: -28px;" src="/images/icon.png">
+                </a>
+                <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Search Modules">
+                </div>
           </form>
-          <p class="navbar-text">Action groups</p>
+
+          <p class="navbar-text text-center">Action Groups <span class="glyphicon glyphicon-ok"></span></p>
 
         <div class="nav nav-pills navbar-right">
-          <li> <a onclick="pingLocalNetwork()"><span class="glyphicon glyphicon-refresh"></span></a></li>
-            <li> <a onclick="showSetting()"><span class="glyphicon glyphicon-wrench"></span></a></li>
-            <li> <a onclick="addItem()"><span class="glyphicon glyphicon-plus" style="color:#41abf2;"></span></a>
+            <li>
+                <a onclick="pingLocalNetwork()"><span class="glyphicon glyphicon-refresh"></span></a>
+            </li>
+            <li>
+                <a onclick="showSetting()"><span class="glyphicon glyphicon-wrench"></span></a>
+            </li>
+            <li>
+                <a onclick="addItem()"><span class="glyphicon glyphicon-plus" style="color:#41abf2;"></span></a>
             </li>
         </div>
       </nav>

@@ -3,11 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Sign in</title>
-    <link rel="stylesheet" href="/css/account.css" media="screen">
-    <script src="/js/toolset.js"></script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/account.css" media="screen">
+    <script src="/js/toolset.js"></script>
+    
   </head>
 
 
@@ -68,10 +71,14 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+
+
   $("#login_form").submit(function(e){
       verifyInput(e, "#usernameInput");
       verifyInput(e, "#passwordInput");
   });
+
+
 });
 
 </script>
