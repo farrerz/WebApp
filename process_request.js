@@ -8,8 +8,7 @@ var login = function(req, res){
     console.log(username);
     User.findOne({ username: username, password:password},function(err,user){
       if (err || user==null){
-        var html = "An error has occurred;";
-        res.send(html);
+        res.redirect("login");
       }else{
         res.redirect("index");
       }
