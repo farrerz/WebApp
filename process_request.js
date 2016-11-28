@@ -1,17 +1,32 @@
 
 var fs = require('fs');
-
+var User = require('./user');
 
 var login = function(req, res){
     var username = req.body.user_name;
     var password = req.body.pass_word;
-    var html = "Logged In\n";
-    html += "Username:" + username + "\nPassword:" + password;
-    res.send(html);
+    console.log(username);
+    User.findOne({ username: username, password:password},function(err,user){
+      if (err || user==null){
+        var html = "An error has occurred;";
+        res.send(html);
+      }else{
+        res.redirect("index");
+      }
+    });
 }
 
 var signup = function(req, res, dist ){
-
+    var user = new User({
+      email: req.body.email,
+      username: req.body.user_name,
+      password: req.body.pass_word
+    }).save(function(err){
+      if (err){
+          var html = "An error has occurred;";
+          res.send(html);
+      }
+    });
     res.redirect(dist);
 }
 
