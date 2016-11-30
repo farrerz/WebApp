@@ -10,8 +10,8 @@ var port      = process.env.PORT || 3000;
 var fs        = require('fs');
 var publicdir = __dirname + '/public';
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(session({
                 secret:"adubohv2oenuob23rub2fubb22ef",
@@ -30,7 +30,7 @@ app.get('/',function(req,res,next){
     }else {
       next();
     }
-})
+});
 
 app.use(function(req, res, next) {
   if (req.path.indexOf('.') === -1) {
