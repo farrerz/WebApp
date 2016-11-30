@@ -6,10 +6,12 @@ body{
   background-color: white;
 }
 
-.rw-invalid{
-  border-color: red;
-  outline-color: red;
+input.ng-invalid {
+    background-color: pink;
 }
+input.ng-valid {
+}
+
 h4 {
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 24px;

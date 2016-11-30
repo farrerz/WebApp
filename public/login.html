@@ -1,84 +1,112 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Sign in</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <head>
+        <meta charset="utf-8">
+        <title>Sign in</title>
 
-    <link rel="stylesheet" href="/css/account.css" media="screen">
-    <script src="/js/toolset.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.min.js"></script>
+        <link rel="stylesheet" href="/css/account.css" media="screen">
+        <script src="/js/toolset.js"></script>
+    </head>
 
-  </head>
+    <body>
+        <div class="container" ng-app='Auth' ng-controller='LoginForm'>
 
-
-<body>
-  <div class="container">
-
-    <div class="row">
-      <div class="col-md-1 col-md-offset-5">
-        <img class="img-responsive" src="images/icon.png" alt="icon" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-3 col-md-offset-4">
-          <h4>Sign in Automator</h4>
-      </div>
-    </div>
-
-      <div class="row">
-        <div class="col-md-3 col-md-offset-4">
-                  <form class='well' id="login_form" action="process?form=login_form" method="POST">
-                    <!-- UserName Field -->
-                    <div class="form-group">
-                      <label for="passwordInput">Username</label>
-                      <div class="inputGroupContainer">
-                      <div class="input-group">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                      <input type="text" name="user_name" class="form-control" id="usernameInput" placeholder='Enter username' >
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Password Field -->
-                    <div class="form-group">
-                      <label for="usernameInput">Password</label>
-                      <div class="inputGroupContainer">
-                      <div class="input-group">
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                      <input type="password" name="pass_word" class="form-control" id="passwordInput" placeholder='Enter password' >
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                  </form>
+            <div class="row">
+                <div class="col-md-1 col-md-offset-5">
+                    <img class="img-responsive" src="images/icon.png" alt="icon"/>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-3 col-md-offset-4">
+                    <h4>Sign in Automator</h4>
+                </div>
+            </div>
+
+            <div class="row" id='login_error' hidden>
+              <div class="col-md-3 col-md-offset-4">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>check username or password.
+                </div>
+              </div>
+
         </div>
 
-        <div class="row">
-          <div class="col-md-3 col-md-offset-4">
-            <div class="well">
-              <p style="text-align:center;margin:0px;">
-                New to Automator? <a href="signup"> Sign up</a>. </p>
+
+            <div class="row">
+                <div class="col-md-3 col-md-offset-4">
+                    <form class='well' ng-submit='login()'>
+                        <!-- UserName Field -->
+                        <div class="form-group">
+                            <label for="passwordInput">Username</label>
+                            <div class="inputGroupContainer">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                    </span>
+                                    <input type="text" ng-model='user.user_name'
+                                     class="form-control" placeholder='Enter username' required>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Password Field -->
+                        <div class="form-group">
+                            <label for="usernameInput">Password</label>
+                            <div class="inputGroupContainer">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-lock"></i>
+                                    </span>
+                                    <input type="password" ng-model='user.pass_word'
+                                     class="form-control" placeholder='Enter password' required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                </div>
             </div>
-          </div>
+
+
+            <div class="row">
+                <div class="col-md-3 col-md-offset-4">
+                    <div class="well">
+                        <p style="text-align:center;margin:0px;">
+                            New to Automator?
+                            <a href="signup">
+                                Sign up</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-</div>
-<!-- Form validation js -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Form validation js -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#login_form").submit(function(e){
-      verifyInput(e, "#usernameInput");
-      verifyInput(e, "#passwordInput");
-  });
+        <script type="text/javascript">
 
-});
+            var app = angular.module('Auth', []);
+            app.controller('LoginForm', function($scope, $http) {
+                // create a blank object to handle form data.
+                console.log($scope.user_name);
+                $scope.login = function(user) {
+                    $http.post('/authenticate', $scope.user).then(function(response) {
+                        changeLocation($scope, '/', true);
+                    }, function(response) {
+                       $("#login_error").show();
+                    });
+                    //End login
+                }
+            });
+        </script>
 
-</script>
+    </body>
 
-</body>
 </html>

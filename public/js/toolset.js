@@ -6,4 +6,14 @@ var verifyInput = function(e, id){
   }else{
       item.removeClass("rw-invalid");
   }
-}
+};
+
+var changeLocation = function($scope, url, forceReload) {
+    $scope = $scope || angular.element(document).scope();
+    if (forceReload || $scope.$$phase) {
+        window.location = url;
+    } else {
+        $location.path(url);
+        $scope.$apply();
+    }
+};
