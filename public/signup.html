@@ -73,12 +73,12 @@
                                     <span class="input-group-addon">
                                         <i class="glyphicon glyphicon-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control" ng-model='passcheck' placeholder='Password'>
+                                    <input type="password" class="form-control" ng-model='passcheck' placeholder='Password' required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="alert alert-danger text-center" if='rw-missmatch' role="alert" hidden>
+                        <div class="alert alert-danger text-center" id='rw-missmatch' role="alert" hidden>
                             <strong>Oh snap!</strong><br>
                             Password mismatch!
                         </div>
@@ -105,11 +105,12 @@
                     //End login
                     if ($scope.user.pass_word != $scope.passcheck){
                         $('#rw-missmatch').show();
-
                     }else{
                       $http.post('/register', $scope.user).then(function(response) {
                           changeLocation($scope, '/login', true);
-                      }, function(response) {});
+                      }, function(response) {
+
+                      });
                     }
                 }
             });

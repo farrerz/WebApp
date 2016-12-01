@@ -1,0 +1,43 @@
+body{
+  margin: 0px;
+  padding: 0px;
+}
+
+#mainNav{
+  background-color: #0096ed;
+}
+
+#titleText{
+  color: white;
+  font-family:verdana;font-size: 20px; color: #555;
+}
+
+
+
+.navbar-fixed-bottom p{
+  width: 100%;
+  text-align: center;
+}
+
+
+.navbar-right {
+  float: right;
+}
+
+ .nav-pills .glyphicon {
+  font-size: 22px;
+
+}
+
+
+
+
+.navbar-text{
+
+    margin-top: 13px;
+    font-size: 18px;
+}
+.navbar{
+  padding: 0 10%;
+  padding-top: 20px;
+}

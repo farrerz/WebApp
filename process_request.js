@@ -18,7 +18,7 @@ var login = function(req, res) {
     });
 };
 
-var signup = function(req, res, dist) {
+var signup = function(req, res) {
     var user = new User({
         email: req.body.email,
         username: req.body.user_name,
@@ -35,13 +35,7 @@ var signup = function(req, res, dist) {
 };
 
 module.exports = function(app) {
-    // app.post('/process', function(req, res){
-    //     if (req.query.form == "login_form"){
-    //         login(req, res);
-    //     }else if (req.query.form == "signup_form"){
-    //         signup(req,res, "login");
-    //     }
-    // });
+
 
     app.post('/authenticate', function(req, res) {
         login(req, res);
