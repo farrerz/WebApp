@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.min.js"></script>
+
+    <style media="screen">
+    body{
+      margin: 0px;
+      padding: 0px;
+      background-color: #0096ed;
+    }
+
+
+    #main_text{
+      color: white;
+      font-size: 50px;
+    }
+      .btn-round{
+        border-radius: 17px;
+        width: 100px;
+        background-color: #0096ed;
+        font-family: verdana;
+        color: 	#ebf0fa;
+        border-color: white;
+        border-width: medium;
+        font-size: 16px;
+      }
+
+      #getstarted{
+        padding: 7px 10px;
+        width: 300px;
+        color: black;
+        background-color: white;
+        font-size: 40px;
+        border-radius: 35px;
+        border-width: 0;
+        margin: 20px;
+      }
+
+      #signin{
+        border-width: 0;
+      }
+      .btn_row{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .img_view{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      img{
+        max-height: 400px;
+        padding: 20px;
+      }
+
+      .rw-bar{
+        padding: 20px 0px;
+      }
+      hr{
+        opacity: 0.2;
+      }
+    </style>
+  </head>
+
+<nav >
+  <div class="container rw-bar">
+    <div class="btnGroup pull-right">
+      <button type="button" class="btn btn-primary btn-round"  id='signin' onclick="window.location.href='/login'">Sign in</button>
+      <button type="button" class="btn btn-primary btn-round"  onclick="window.location.href='/signup'">Sign up</button>
+    </div>
+  </div>
+  <hr>
+</nav>
+
+    <main>
+
+          <div class="main_content">
+                <h1 id='main_text' class="text-center">Automate IoT with the service <br />you love</h1>
+          </div>
+
+          <div class="container img_view">
+              <img src="images/it.png" alt="iot" class="img-responsive">
+          </div>
+
+              <div class="btn_row">
+                  <button id='getstarted' onclick="window.location.href='/login'"><strong>Get started</strong></button>
+              </div>
+
+    </main>
+      <!-- Footer Content -->
+    <footer>
+      <nav class="navbar navbar-fixed-bottom" >
+          <div class="container">
+            <p class="navbar-text text-center"  style="width:100%; color: white;">Copyright (c) 2016 Copyright Holder All Rights Reserved.</p>
+          </div>
+      </nav>
+    </footer>
+
+    <script type="text/javascript">
+
+    </script>
+  </body>
+</html>

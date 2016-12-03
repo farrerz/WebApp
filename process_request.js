@@ -25,13 +25,13 @@ var signup = function(req, res) {
         password: req.body.pass_word
     }).save(function(err) {
         if (err) {
-        //    var html = "An error has occurred;";
+            //    var html = "An error has occurred;";
             res.status(400);
             res.end();
         }
     });
-  //  res.redirect(dist);
-      res.end();
+    //  res.redirect(dist);
+    res.end();
 };
 
 module.exports = function(app) {
