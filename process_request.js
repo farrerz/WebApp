@@ -1,5 +1,7 @@
 var fs = require('fs');
 var User = require('./user');
+var Room = require('./room');
+var http = require('http');
 
 var login = function(req, res) {
     var username = req.body.user_name;
@@ -18,6 +20,76 @@ var login = function(req, res) {
     });
 };
 
+// var req = http.get({host: '192.168.10.109',path:'/info'}, function(res) {
+//   //console.log('STATUS: ' + res.statusCode);
+//   //console.log('HEADERS: ' + JSON.stringify(res.headers));
+//     Room.find(function (err, rooms) {
+//         if (err) return console.error(err);
+//         console.log(rooms);
+//         });
+//   // Buffer the body entirely for processing as a whole.
+//   var bodyChunks = [];
+//   res.on('data', function(chunk) {
+//     // You can process streamed parts here...
+//     bodyChunks.push(chunk);
+//   }).on('end', function() {
+
+//     var body = Buffer.concat(bodyChunks);
+//     //console.log('BODY: ' + body);
+//     //var obj = JSON.parse(fs.readFileSync(body, 'utf8'));
+//     var obj = JSON.parse(body);
+//     //console.log("OBJ       +" +JSON.stringify(obj));
+//     var room = Room.findOne({'roomname':obj.RoomName}, function(err,room){
+//         if(err)throw err;
+//         //console.log(room);
+//         if(room == null){
+//             console.log("add!! ");
+//             addMod(obj,'192.168.10.109');
+//         }
+//         //console.log("OutCOunt: " + room.digitaloutputs[0]);
+//     });
+    
+    
+//     // ...and/or process the entire body here.
+//   })
+// });
+function addMod(obj,ipaddr) {
+    //var roomsss = Room.find({});
+    
+   // mod.digitaloutputs.push(tempdout._id);
+    //console.log("ROOM: " + Room.findOne().roomname);
+    //console.log("USER: " + User.findOne().username);
+    //console.log("data = " + JSON.stringify(obj));
+    //console.log("Room :  " + Room.find()[0]);
+    //console.log("Room :  " + obj.digitalOutputs[0].outputName);
+    var names = [];
+    var pins = [];
+    var tempFinal = [];
+    for(var i = 0; i <obj.digitalOutputs.length; i++){
+        console.log("Run");
+        tempFinal.push({outputname: obj.digitalOutputs[i].outputName, pin: obj.digitalOutputs[i].pin});
+    }
+    //console.log("TEMPFINAL: " +tempFinal);
+    var mod = new Room();
+    mod.roomname = obj.RoomName;
+    mod.digitaloutputs = tempFinal;
+    mod.ipaddr = ipaddr;
+    console.log("mod Douts: " + mod.digitaloutputs[0]);
+    mod.save(function(err){
+        if(err){
+            console.log(err);
+        }
+    });
+    // var room = Room.findOne({'roomname':obj.RoomName}, function(err,room){
+    //     if(err)throw err;
+    //     console.log("roomname: " + room.roomname);
+    //     console.log("OutCOunt: " + room.digitaloutputs[0]);
+    // });
+   // mod.digitaloutputs.push(tempdout._id);
+    // console.log("ROOM: " + Room.findOne().roomname);
+    // console.log("USER: " + User.findOne().username);
+
+};
 var signup = function(req, res) {
     var user = new User({
         email: req.body.email,
@@ -37,12 +109,64 @@ var signup = function(req, res) {
 module.exports = function(app) {
 
 
-    app.post('/authenticate', function(req, res) {
-        login(req, res);
-    });
+        app.post('/authenticate', function(req, res) {
+            login(req, res);
+        });
+        app.get('/api/getCells',function(req,res){
+            Room.find(function (err, rooms) {
+                if (err) return console.error(err);
+                    return res.json(rooms);
+                });
+            //return res.json([{'title':'','text':'Hello World one!!!'},{'title':'Cell2','text':'Hellow World Two!!'}]);
+        });
+        app.post('/register', function(req, res) {
+            signup(req, res);
+        });
+        app.post('/addroom', function(req,res){
+            console.log(req.body.newipaddr);
+            var test = http.get({host: req.body.newipaddr,path:'/info'}, function(r) {
+              //console.log('STATUS: ' + res.statusCode);
+              //console.log('HEADERS: ' + JSON.stringify(res.headers));
+            Room.find(function (err, rooms) {
+                if (err){
+                    res.status(400);
+                    res.end();
+                }
+                    console.log(rooms);
+                    
+                });
+              // Buffer the body entirely for processing as a whole.
+            var bodyChunks = [];
+            r.on('data', function(chunk) {
+                // You can process streamed parts here...
+                bodyChunks.push(chunk);
+            }).on('end', function() {
 
-    app.post('/register', function(req, res) {
-        signup(req, res);
-    });
+                var body = Buffer.concat(bodyChunks);
+                //console.log('BODY: ' + body);
+                //var obj = JSON.parse(fs.readFileSync(body, 'utf8'));
+                var obj = JSON.parse(body);
+                //console.log("OBJ       +" +JSON.stringify(obj));
+                var room = Room.findOne({'roomname':obj.RoomName}, function(err,room){
+                    if(err)throw err;
+                    //console.log(room);
+                    if(room == null){
+                        console.log("add!! ");
+                        addMod(obj,req.body.newipaddr);
+                        res.status(200);
+                        res.end();
+                    }
+                });
+    
+    // ...and/or process the etire body here.
+                })
+            });
+            
+            
+            // ...and/or process the entire body here.
+
+        });
+
+    //this.addRoom = addMod();
 
 };

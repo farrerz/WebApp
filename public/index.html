@@ -58,7 +58,11 @@
               <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
-              ...
+            <form id="addDeviceForm">
+              IP Address:<br>
+              <input type="text" name="newipaddr"><br>
+              <input type="submit" name="">
+            </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -71,15 +75,17 @@
     <main>
         <div class="container">
           <div class="row-fluid">
-                <div class="col-md-4 rw-cell" ng-repeat='cell in cells' >
+                <div class="col-md-4 rw-cell" ng-repeat='room in rooms' >
                     <div class="panel panel-info">
                       <div class="panel-heading" style="background-color:#EF5350;color:white">
                         <h3 class="panel-title">
-                          {{cell}}<a href='#' class="pull-right"><span class="glyphicon glyphicon-cog"></span></a>
+                          {{room.roomname}}<a href='#' class="pull-right"><span class="glyphicon glyphicon-cog"></span></a>
                         </h3>
                       </div>
                           <div class="panel-body">
-                              <p>Stuff that fills this column {{cell}}</p>
+                              <div class="col-md-4 rw-cell" ng-repeat='doutput in room.digitaloutputs' >
+                              <p>Stuff that fills this column {{doutput.outputname}}</p>
+                              <button type="button" class="digitalButton" value="0" onclick="setPin(this)" id="http://{{room.ipaddr}}/set?pin={{doutput.pin}}&val=">Toggle {{doutput.outputname}}</button>
                           </div>
                     </div>
 
@@ -96,13 +102,53 @@
           </div>
       </nav>
     </footer>
+    <script type="text/javascript">
+        function setPin(btn){
+          //alert($(btn).attr('id'));
+            $.ajax({
+                type: 'GET',
+                url: $(btn).attr('id')+$(btn).attr('value'),
+                timeout: 8000,
+                success: function(data) {
+                    //alert(data);
+                    $("p").text(data.value);
+                    if($(btn).val() == "0")
+                    {
+                      $(btn).val("1");
+                    }
+                    else{
+                      $(btn).val("0");
+                    }
+                    //$(btn).value()
 
+                }
+            });
+        };
+   $('#addDeviceForm').submit(function(e){
+  e.preventDefault();
+  //do some verification
+  $.ajax({
+    url: '/addroom',
+    type:'POST',
+    data: $(this).serialize(),
+    success: function(data)
+    {
+      //callback methods go right here
+    }
+  });
+});
+</script>
     <script type="text/javascript">
 
         var app = angular.module('automator', []);
-        app.controller('MainViewController', function($scope){
-            $scope.cells = ['Cell1','Cell2', 'CEll2'];
+
+        app.controller('MainViewController', ['$scope','$http',function($scope,$http){
+          $http.get( "/api/getCells").then(function( response ) {
+          $scope.rooms= response.data; //from your sample;
+          console.log(response.data);
         });
+        }]);
+        
 
     </script>
   </body>
