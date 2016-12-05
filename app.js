@@ -39,7 +39,7 @@ repeat(runTask).every(30, 'sec').start.in(1, 'sec');
 
 app.get('/', function(req, res, next) {
     if (!req.session.user) {
-        res.redirect('login');
+        res.redirect('discover');
     } else {
         next();
     }

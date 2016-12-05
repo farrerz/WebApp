@@ -7,6 +7,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
       <script src='js/main.js'></script>
 
       <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -17,6 +18,65 @@
           text-align: center;
           padding: 10px;
       }
+      body { padding-bottom: 80px; }
+      /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
   </style>
 
 
@@ -42,75 +102,191 @@
                 <a onclick="showSetting()"><span class="glyphicon glyphicon-wrench"></span></a>
             </li>
             <li>
-                <a onclick='addItem()'><span class="glyphicon glyphicon-plus"></span></a>
+                <a onclick='showAction()'><span class="glyphicon glyphicon-plus"></span></a>
             </li>
         </div>
       </nav>
       <!-- Modal -->
       <!-- Button trigger modal -->
 
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header" >
+            <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              <h4 class="modal-title" id="myModalLabel">Add Room</h4>
             </div>
             <div class="modal-body">
             <form id="addDeviceForm">
               IP Address:<br>
               <input type="text" name="newipaddr"><br>
-              <input type="submit" name="">
             </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-primary" id="btnAddRoom">Add Room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="actionsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Add Action</h4>
+            </div>
+            <div class="modal-body">
+            <form id="addActionForm">
+              Output:<br>
+              <div ng-app >
+                <select ng-model="room" ng-options="c.roomname for c in rooms"></select>
+                <input type="hidden" name="room" ng-value="room.roomname" />
+                <input type="hidden" name="ipaddr" ng-value="room.ipaddr" />
+                <select ng-model="output" ng-options="p.outputname for p in room.digitaloutputs"></select>
+                <input type="hidden" name="output" ng-value="output.outputname" />
+                <input type="hidden" name="outputpin" ng-value="output.pin" /><br>
+                Time:<br>
+                <input type="text" name="newTime"><br>
+                Value:<br>
+                <input type="text" name="actionValue"><br>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="btnAddAction">Add Action</button>
             </div>
           </div>
         </div>
       </div>
         <!-- Main Content -->
     <main>
-        <div class="container">
-          <div class="row-fluid">
+        <div class="container-fluid">
+        <div class="alert alert-warning collapse alert-dismissible" role="alert" id="warningMsg">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+          <span>
+            <strong>Warning!</strong> Duplicate Room, Room already added.
+          </span>
+        </div>
+        <div class="alert alert-danger collapse alert-dismissible" role="alert" id="errorMsg">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+          <span>
+            <strong>Error!</strong> The system was not able to add the room.
+          </span>
+        </div>
+        <div class="alert alert-success collapse alert-dismissible" role="alert" id="successMsg">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+          <span>
+            <strong>Success!</strong> Added Room Successfully!
+          </span>
+        </div>
+        <div class="alert alert-danger collapse alert-dismissible" role="alert" id="actionErrorMsg">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+          <span>
+            <strong>Error!</strong> The system was not able to add the action.
+          </span>
+        </div>
+        <div class="alert alert-success collapse alert-dismissible" role="alert" id="actionSuccessMsg">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+          <span>
+            <strong>Success!</strong> Added Action Successfully!
+          </span>
+        </div>
+          <div class="panel panel-info">
+            <div class="panel-heading" style="background-color:#EF5350;color:white">
+              <h3 class="panel-title">Rooms</h3>
+            </div>
+            <div class="panel-body" style="background-color:#f5f5f5"">
+            <div class="row-fluid">
                 <div class="col-md-4 rw-cell" ng-repeat='room in rooms' >
-                    <div class="panel panel-info">
-                      <div class="panel-heading" style="background-color:#EF5350;color:white">
+                    <div class="panel panel-danger">
+                      <div class="panel-heading">
                         <h3 class="panel-title">
-                          {{room.roomname}}<a href='#' class="pull-right"><span class="glyphicon glyphicon-cog"></span></a>
+                          {{room.roomname}}
                         </h3>
                       </div>
                           <div class="panel-body">
-                              <div class="col-md-4 rw-cell" ng-repeat='doutput in room.digitaloutputs' >
-                              <p>Stuff that fills this column {{doutput.outputname}}</p>
-                              <button type="button" class="digitalButton" value="0" onclick="setPin(this)" id="http://{{room.ipaddr}}/set?pin={{doutput.pin}}&val=">Toggle {{doutput.outputname}}</button>
+                          <div class=col-md-12>
+                          <form class="form-inline col-md-12" ng-repeat='doutput in room.digitaloutputs'>
+                              
+                              <div class="form-group col-md-12">
+                              <label for="http://{{room.ipaddr}}/set?pin={{doutput.pin}}&val=" class="col-md-7 col-form-label">{{doutput.outputname}}</label>
+                              <div class="col-md-5">
+                                <label class="switch" >
+                                  <input  class="digitalToggle form-control" type="checkbox" checked id="http://{{room.ipaddr}}/set?pin={{doutput.pin}}&val=" onclick="setPin(this)">
+                                  <div class="slider round digitalToggle"></div>
+                                </label>
+                                </div>
+                          </div>
+                          </form>
+                          </div>
+                    </div>
+
+
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+               <!-- <hr style="width: 100%; color: black; height: 1px; background-color:black;" /> -->
+         
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Action Groups</h3>
+            </div>
+            <div class="panel-body" style="background-color:#f5f5f5">
+            <div class="row-fluid">
+                <div class="col-md-4 rw-cell" ng-repeat='action in actions' >
+                    <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">
+                          {{action.outroomname}}<a href='#' class="pull-right"><span class="glyphicon glyphicon-cog"></span></a>
+                        </h3>
+                      </div>
+                          <div class="panel-body">
+                              <div class="col-md-12">
+                              <p class="text-center"><b>Output: </b>{{action.outputname}}</p>
+                              <p class="text-center"><b>Time: </b>{{action.actiontime}}</p>
+                              <p class="text-center"><b>Value: </b>{{action.actionvalue}}</p>
                           </div>
                     </div>
 
 
                 </div>
           </div>
+          </div>
+          </div>
+        </div> 
         </div>
+
     </main>
       <!-- Footer Content -->
     <footer>
       <nav class="navbar navbar-default navbar-fixed-bottom" id="bottomNav">
-          <div class="container">
+          <div class="container-fluid">
             <p class="navbar-text">Copyright (c) 2016 Copyright Holder All Rights Reserved.</p>
           </div>
       </nav>
     </footer>
     <script type="text/javascript">
+     
         function setPin(btn){
-          //alert($(btn).attr('id'));
+          var value = "1";
+          if($(btn).prop('checked')){
+            value = "0";
+          }
             $.ajax({
                 type: 'GET',
-                url: $(btn).attr('id')+$(btn).attr('value'),
+                url: $(btn).attr('id')+value,
                 timeout: 8000,
                 success: function(data) {
                     //alert(data);
-                    $("p").text(data.value);
                     if($(btn).val() == "0")
                     {
                       $(btn).val("1");
@@ -122,30 +298,104 @@
 
                 }
             });
-        };
-   $('#addDeviceForm').submit(function(e){
-  e.preventDefault();
-  //do some verification
-  $.ajax({
-    url: '/addroom',
-    type:'POST',
-    data: $(this).serialize(),
-    success: function(data)
-    {
-      //callback methods go right here
-    }
-  });
+      };
+$('#btnAddRoom').click(function(){
+  $('#addDeviceForm').submit();
 });
+$('#btnAddAction').click(function(){
+  $('#addActionForm').submit();
+});
+
 </script>
     <script type="text/javascript">
 
         var app = angular.module('automator', []);
 
         app.controller('MainViewController', ['$scope','$http',function($scope,$http){
-          $http.get( "/api/getCells").then(function( response ) {
-          $scope.rooms= response.data; //from your sample;
-          console.log(response.data);
+          $scope.loadData = function () {
+              $http.get("/api/getRooms").then(function(response) {
+              $scope.rooms = response.data;
+              console.log(response.data);
+
+          });
+              $http.get("/api/getActionGroups").then(function(response) {
+              $scope.actions = response.data;
+              console.log(response.data);
+
+          });
+          $('#addDeviceForm').submit(function(e){
+            $.blockUI({baseZ: 3000});
+            e.preventDefault();
+            //do some verification
+            try{
+            $.ajax({
+              url: '/addroom',
+              type:'POST',
+              data: $(this).serialize(),
+              success: function(data)
+              {
+                $('#successMsg').show();
+                $scope.loadData();
+                $('#settingsModal').modal('toggle');
+                $.unblockUI();
+                //callback methods go right here
+              },
+              error: function(e){
+                if(e.status == 409){
+                  $('#warningMsg').show();
+                }else{
+                  $('#errorMsg').show();
+                }
+                $('#settingsModal').modal('toggle');
+                $.unblockUI();
+              }
+          })
+          }catch(e){
+            $('#errorMsg').show();
+                $('#settingsModal').modal('toggle');
+                $.unblockUI();
+          }
+
         });
+          $('#addActionForm').submit(function(e){
+            //$.blockUI({baseZ: 3000});
+            e.preventDefault();
+            //do some verification
+            try{
+            $.ajax({
+              url: '/addaction',
+              type:'POST',
+              data: $(this).serialize(),
+              success: function(data)
+              {
+                $('#actionSuccessMsg').show();
+                $scope.loadData();
+                $('#actionsModal').modal('toggle');
+                $.unblockUI();
+                //callback methods go right here
+              },
+              error: function(e){
+                  $('#actionErrorMsg').show();
+                $('#actionsModal').modal('toggle');
+                $.unblockUI();
+              }
+          })
+          }catch(e){
+            $('#errorMsg').show();
+                $('#actionsModal').modal('toggle');
+                $.unblockUI();
+          }
+
+        });
+      };
+
+  //initial load
+      $scope.loadData();
+
+        //   $http.get( "/api/getCells").then(function( response ) {
+        //   $scope.rooms= response.data; //from your sample;
+        //   console.log(response.data);
+        // });
         }]);
         
 

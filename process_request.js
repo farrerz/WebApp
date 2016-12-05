@@ -1,6 +1,7 @@
 var fs = require('fs');
 var User = require('./user');
 var Room = require('./room');
+var ActionGroup = require('./actiongroup');
 var http = require('http');
 
 var login = function(req, res) {
@@ -112,31 +113,62 @@ module.exports = function(app) {
         app.post('/authenticate', function(req, res) {
             login(req, res);
         });
-        app.get('/api/getCells',function(req,res){
+        app.get('/api/getRooms',function(req,res){
             Room.find(function (err, rooms) {
                 if (err) return console.error(err);
                     return res.json(rooms);
                 });
             //return res.json([{'title':'','text':'Hello World one!!!'},{'title':'Cell2','text':'Hellow World Two!!'}]);
         });
+        app.get('/api/getActionGroups',function(req,res){
+            ActionGroup.find(function (err, actiongroups) {
+                if (err) return console.error(err);
+                    return res.json(actiongroups);
+                });
+            //return res.json([{'title':'','text':'Hello World one!!!'},{'title':'Cell2','text':'Hellow World Two!!'}]);
+        });
         app.post('/register', function(req, res) {
             signup(req, res);
         });
+        app.post('/addaction', function(req,res){
+           console.log(req.body.room);
+                var ag = new ActionGroup({
+                    outroomname: req.body.room,
+                    outroomip: req.body.ipaddr,
+                    outputname: req.body.output,
+                    outputpin: req.body.outputpin,
+                    actiontime: req.body.newTime,
+                    actionvalue: req.body.actionValue
+                }).save(function(err) {
+                if (err) {
+                    //    var html = "An error has occurred;";
+                    
+                }else{
+                    res.status(200);
+                    res.end();
+                    return;
+                }
+            });
+            
+        })
         app.post('/addroom', function(req,res){
             console.log(req.body.newipaddr);
-            var test = http.get({host: req.body.newipaddr,path:'/info'}, function(r) {
+            try{
+            var test = http.get('http://'+req.body.newipaddr +'/info', function(r) {
               //console.log('STATUS: ' + res.statusCode);
               //console.log('HEADERS: ' + JSON.stringify(res.headers));
             Room.find(function (err, rooms) {
                 if (err){
                     res.status(400);
                     res.end();
+                    return;
                 }
                     console.log(rooms);
                     
                 });
               // Buffer the body entirely for processing as a whole.
             var bodyChunks = [];
+            
             r.on('data', function(chunk) {
                 // You can process streamed parts here...
                 bodyChunks.push(chunk);
@@ -148,21 +180,47 @@ module.exports = function(app) {
                 var obj = JSON.parse(body);
                 //console.log("OBJ       +" +JSON.stringify(obj));
                 var room = Room.findOne({'roomname':obj.RoomName}, function(err,room){
-                    if(err)throw err;
+                    if(err){
+                        res.status(400);
+                        res.end();
+                        return;
+                    }
                     //console.log(room);
                     if(room == null){
                         console.log("add!! ");
                         addMod(obj,req.body.newipaddr);
                         res.status(200);
                         res.end();
+                        return;
                     }
+                    res.status(409);
+                    res.end();
+                    return;
                 });
     
     // ...and/or process the etire body here.
                 })
             });
-            
-            
+            test.on('error', function(e) {
+    // Call callback function with the error object which comes from the request
+                res.status(400);
+                res.end();
+                return;
+            });
+            test.on('socket', function (socket) {
+                socket.setTimeout(5000);  
+                    socket.on('timeout', function() {
+                        test.abort();
+                        res.status(400);
+                        res.end();
+                        return;
+                    });
+            });
+            }catch(e){
+                res.status(400);
+                res.end();
+                return;
+            }
             // ...and/or process the entire body here.
 
         });

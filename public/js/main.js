@@ -9,5 +9,9 @@ var addItem = function(){
 };
 
 var showSetting = function(){
-  $('#myModal').modal('toggle');
+  $('#settingsModal').modal('toggle');
+};
+
+var showAction = function(){
+  $('#actionsModal').modal('toggle');
 };

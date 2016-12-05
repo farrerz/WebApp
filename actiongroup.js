@@ -7,12 +7,17 @@ var Schema = mongoose.Schema;
 // 	state: Boolean
 // });
 var actionGroupSchema = new Schema({
-  outputname: String,
-  outputid: String
+  outroomname: {type:String,required: true},
+  outroomip: {type:String,required: true},
+  outputname: {type:String,required: true},
+  outputpin: {type:String,required: true},
   actiontype: String,
+  inroomname: String,
+  inroomip: String,
   inputname: String,
-  inputid: String,
-  actionvalue: Number
+  inputpin: String,
+  actionvalue: {type:String,required: true},
+  actiontime: {type:String,required: true}
 });
 // Model
 //var DigitalOutput = mongoose.model('DigitalOutput', digitaloutputSchema);
